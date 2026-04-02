@@ -12,6 +12,8 @@ import files.reverseip as reverseip
 import files.subdomainfinder as subs
 import files.dnspython as dnspy
 import time
+import files.recons as reconn
+from urllib.parse import urljoin, urlparse
 
 init()
 version = "v1"
@@ -28,6 +30,7 @@ selectList = """
 7 - Subdomain Finder (With IP)
 8 - Find All IPs
 9 - Find All MX Records
+10 - Full Detailed Recon!
 """
 
 class App:
@@ -53,6 +56,8 @@ class App:
             self.allip()
         elif self.select == "9":
             self.allsmtp()
+        elif self.select == "10":
+            self.detailedrecon()
         else:
             print("\nLütfen geçerli bir değer giriniz")
             time.sleep(3)
@@ -104,6 +109,14 @@ class App:
     def allsmtp(self):
         selectDomain = input("\nHTTP/HTTPS Olmadan Domain Giriniz (Örn: google.com): ")
         dnspy.find_all_smtp(selectDomain)
+        time.sleep(3)
+        App()
+    def detailedrecon(self):
+        selectUrl = input("Domain Giriniz (Örn: https://google.com/): ")
+        parsed = urlparse(selectUrl)
+        domain = parsed.netloc
+        reconn.run_recon(selectUrl)
+        print(f"\nSonuçlar {domain}_recon.txt olarak kaydedildi!")
         time.sleep(3)
         App()
 
